@@ -36,7 +36,11 @@ export default function TopNav() {
           top: 0,
           left: 0,
           zIndex: 1000,
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          top: 0,
+left: 0,
+right: 0,zIndex: 1000,
+  boxSizing: 'border-box'
         }}
       >
         {/* Brand */}
@@ -46,14 +50,14 @@ export default function TopNav() {
 
         {/* Nav Links */}
         <nav style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+           <NavLink to="/home" end className={linkClass}>Home</NavLink>
           <NavLink to="/dashboard" end className={linkClass}>Dashboard</NavLink>
           <NavLink to="/dashboard/records" className={linkClass}>Data Records</NavLink>
-          <NavLink to="/dashboard/fisheries" className={linkClass}>Fisheries</NavLink>
-          <NavLink to="/dashboard/cmfri-pdfs" className={linkClass}>CMFRI PDFs</NavLink>
           <NavLink to="/dashboard/taxonomy" className={linkClass}>Taxonomy</NavLink>
           <NavLink to="/dashboard/oceanic-parameters" className={linkClass}>Oceanic Parameters</NavLink>
           <NavLink to="/dashboard/obis-records" className={linkClass}>OBIS Records</NavLink>
           <NavLink to="/dashboard/marine-data" className={linkClass}>Marine Data</NavLink>
+          <NavLink to="/dashboard/aquainsight" className={linkClass}>AquaInsight</NavLink>
         </nav>
 
         {/* User Info + Logout */}

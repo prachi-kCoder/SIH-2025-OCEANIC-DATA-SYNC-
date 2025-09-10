@@ -114,7 +114,7 @@ export default function DataRecordsPage() {
       <div className="grid grid-3" style={{ gap: 24, marginBottom: 32 }}>
 
         {/* Line Chart */}
-        <div className="card" style={{ gridColumn: 'span 2' }}>
+        <div className="card" style={{ gridColumn: 'span 2',width:"90%" }}>
           <div className="card-body">
             <h2 className="card-title">Records Over Time (Top Species)</h2>
             <ResponsiveContainer width="100%" height={350}>
@@ -144,10 +144,10 @@ export default function DataRecordsPage() {
         </div>
 
         {/* Pie Chart */}
-        <div className="card">
+        <div className="card" style={{width: "190%", marginLeft: "-25%"}}>
           <div className="card-body">
             <h2 className="card-title">Records Distribution by Source</h2>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} style={{ marginLeft: "10px" }}>
               <PieChart>
                 <Pie
                   data={pieData}

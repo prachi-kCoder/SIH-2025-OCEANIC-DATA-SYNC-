@@ -3,12 +3,12 @@ import api from "../../services/api";
 
 const paramsList = [
   "water_level", "water_temperature", "air_temperature",
-  "wind", "air_pressure", "visibility"
+  "wind", "air_pressure", "visibility", "salinity"
 ];
 
 export default function NOAAControls({ onFetched }) {
-  const [station, setStation] = useState("");
-  const [selected, setSelected] = useState([]);
+  const [station, setStation] = useState("8723214");
+  const [selected, setSelected] = useState(["salinity"]);
   const [begin, setBegin] = useState("20250101");
   const [end, setEnd] = useState("20250105");
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,27 @@ export default function NOAAControls({ onFetched }) {
   async function fetchNOAA() {
     setLoading(true);
     try {
-      const recs = await api.getNOAARecords(station, selected, begin, end);
-      onFetched(recs);
+      if (!station || selected.length === 0) {
+        alert("Please enter a station ID and select at least one parameter.");
+        setLoading(false);
+        return;
+      }
+
+      const allRecords = [];
+
+      for (const product of selected) {
+        const records = await api.ingestNOAA(station, product, begin, end);
+        const tagged = records.map(r => ({
+          ...r,
+          source: "noaa",
+          station,
+          parameter: product,
+          fetchedAt: new Date().toISOString(),
+        }));
+        allRecords.push(...tagged);
+      }
+
+      onFetched(allRecords);
     } catch (e) {
       console.error(e);
       alert("Failed to fetch NOAA data");

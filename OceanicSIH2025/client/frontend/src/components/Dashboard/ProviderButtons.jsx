@@ -59,9 +59,7 @@ export default function ProviderButtons({ onAfterIngest }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <button className="btn" disabled={busy} onClick={() => run('fisheries', {})}>
-        Ingest Fisheries
-      </button>
+      
 
       <button
         className="btn secondary"
@@ -104,23 +102,6 @@ export default function ProviderButtons({ onAfterIngest }) {
     Ingest WoRMS
   </button>
 </div>
-
-
-      <button
-        className="btn neutral"
-        disabled={busy}
-        onClick={() => run('bold', { taxon: 'Sardinella' })}
-      >
-        Ingest BOLD
-      </button>
-
-      <button
-        className="btn neutral"
-        disabled={busy}
-        onClick={() => run('cmfri', { year: '2023' })}
-      >
-        Ingest CMFRI PDFs
-      </button>
     </div>
   )
 }

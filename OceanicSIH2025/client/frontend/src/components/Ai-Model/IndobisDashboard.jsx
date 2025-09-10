@@ -291,7 +291,7 @@ export default function IndobisDashboard() {
   }, [gridResult]);
 
   return (
-    <div className="max-w-6xl mx-auto p-4 space-y-6">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 space-y-6">
       <header className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">🌊 IndOBIS SDM — Dashboard</h1>
@@ -331,11 +331,7 @@ export default function IndobisDashboard() {
               <label className="text-sm">Pick model</label>
               <select value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)} className="p-2 border rounded">
                 <option value="">-- select model --</option>
-                {models.map((m) => (
-                  <option key={m.scientific_name} value={m.scientific_name}>
-                    {m.scientific_name} {m.auc_test ? `(AUC ${m.auc_test.toFixed(2)})` : ""}
-                  </option>
-                ))}
+                
               </select>
               {models.length > 0 && (
                 <div className="text-sm text-gray-500">Latest: <b>{models[0].scientific_name}</b></div>
@@ -356,7 +352,7 @@ export default function IndobisDashboard() {
             <div key={m.scientific_name} className="p-3 border rounded flex justify-between items-start">
               <div>
                 <div className="font-semibold">{m.scientific_name}</div>
-                <div className="text-sm text-gray-600">AUC: {m.auc_test ? m.auc_test.toFixed(2) : "N/A"} • {m.n_presence} presences</div>
+                
                 <div className="text-xs mt-1 text-gray-500">Trained: {m.trained_at || "unknown"}</div>
               </div>
               <div className="flex flex-col gap-2">

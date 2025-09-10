@@ -103,7 +103,7 @@ export default function Dashboard() {
   return (
     <div className="container">
       {/* Charts at the top */}
-      <div className="grid grid-2" style={{ gap: 24, marginBottom: 32 }}>
+      <div className="grid grid-2" style={{ gap: 24, marginBottom: 32 ,width:"110%"}}>
         <div className="card">
           <div className="card-body">
             <h2 className="card-title">Records by Provider</h2>
@@ -113,7 +113,7 @@ export default function Dashboard() {
                   data={chartData}
                   dataKey="value"
                   nameKey="name"
-                  cx="40%"
+                  cx="60%"
                   cy="50%"
                   outerRadius={100}
                   labelLine={true} // enables lines connecting slices
@@ -179,12 +179,6 @@ export default function Dashboard() {
           <div className="card-body">
             <h2 className="card-title">Ingest Providers</h2>
             <ProviderButtons onAfterIngest={fetchData} />
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body">
-            <h2 className="card-title">Ingest Providers</h2>
-            <IndobisDashboard />
           </div>
         </div>
       </div>

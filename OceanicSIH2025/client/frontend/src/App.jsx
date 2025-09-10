@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './components/Dashboard/Dashboard'
 import SidebarLayout from './components/layout/SidebarLayout'
 import Footer from './components/layout/Footer'
+import Navbar from './components/layout/TopNav'
+import Home from './pages/Home'
 import DataRecordsPage from './pages/DataRecordsPage'
 import TaxonomyPage from './pages/TaxonomyPage'
 import OceanicParametersPage from './pages/OceanicParametersPage'
@@ -12,14 +14,31 @@ import CMFRIPdfsPage from './pages/CMFRIPdfsPage'
 import Login from './components/Auth/Login.jsx'
 import Signup from './components/Auth/Signup.jsx'
 import ProtectedRoute from './components/Auth/ProtectedRoute.jsx'
-
+import IndobisDashboard from './components/Ai-Model/IndobisDashboard'
 function App() {
   return (
     <div className="app-root">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
+          {/* Home / Landing Page after login */}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <Home />
+                  <Footer />
+                </>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Dashboard and Nested Routes */}
           <Route
             path="/dashboard"
             element={
@@ -36,10 +55,13 @@ function App() {
             <Route path="oceanic-parameters" element={<OceanicParametersPage />} />
             <Route path="obis-records" element={<ObisRecordsPage />} />
             <Route path="marine-data" element={<MarineDataPage />} />
+            <Route path="aquainsight" element={<IndobisDashboard />} />
           </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
+
+          {/* Redirect root → login by default */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-        
       </BrowserRouter>
     </div>
   )

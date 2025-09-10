@@ -23,7 +23,7 @@ async function ingest(provider, payload) {
 }
 
 // 🔹 NOAA: dedicated function (singular product)
-async function getNOAARecord({ station, product, begin_date, end_date }) {
+/*async function getNOAARecord({ station, product, begin_date, end_date }) {
   if (!station || !product) {
     throw new Error("Station and product are required");
   }
@@ -45,6 +45,30 @@ async function getNOAARecord({ station, product, begin_date, end_date }) {
   }
 
   return await res.json();
+}*/
+
+export async function ingestNOAA(station, product, begin_date, end_date) {
+  const res = await fetch(`${API_URL}/ingest/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      provider: "noaa",
+      payload: {
+        station,
+        product,
+        begin_date,
+        end_date,
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "NOAA ingestion failed");
+  }
+
+  const data = await res.json();
+  return data.records || [];
 }
 // 🔹 WoRMS: dedicated function
 async function ingestWorms({ scientificname, AphiaID }) {
@@ -71,7 +95,7 @@ async function ingestObis({ scientificname, size = 20 }) {
   return await ingest("obis", payload);
 }
 
-export async function ingestOpenMeteo(payload) {
+async function ingestOpenMeteo(payload) {
   const reqPayload = {
     ...payload,
     limit_hours: payload.limit_hours || 6, // default 48 hours
@@ -86,6 +110,6 @@ export async function ingestOpenMeteo(payload) {
   return res.json();
 }
 
-export default { getData, ingest, getNOAARecord , ingestWorms, ingestObis };
+export default { getData, ingest, ingestWorms, ingestObis ,ingestNOAA,ingestOpenMeteo};
 
 
