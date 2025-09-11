@@ -486,3 +486,90 @@ export default function InsightsUI() {
 }
 
 ```
+```
+import * as React from "react"
+
+export function Button({ className = "", ...props }) {
+  return (
+    <button
+      className={`px-4 py-2 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition ${className}`}
+      {...props}
+    />
+  )
+}
+```
+```
+import * as React from "react"
+
+export function Card({ className = "", children }) {
+  return (
+    <div className={`bg-white rounded-2xl shadow-md border border-gray-200 ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+export function CardHeader({ className = "", children }) {
+  return (
+    <div className={`p-4 border-b border-gray-200 ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+export function CardTitle({ className = "", children }) {
+  return (
+    <h2 className={`text-lg font-semibold ${className}`}>
+      {children}
+    </h2>
+  )
+}
+
+export function CardContent({ className = "", children }) {
+  return (
+    <div className={`p-4 ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+export function CardFooter({ className = "", children }) {
+  return (
+    <div className={`p-4 border-t border-gray-200 ${className}`}>
+      {children}
+    </div>
+  )
+}
+
+```
+```
+import * as React from "react"
+
+export function Select({ value, onValueChange, children }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onValueChange(e.target.value)}
+      className="w-full px-3 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring focus:border-blue-400"
+    >
+      {children}
+    </select>
+  )
+}
+
+export function SelectItem({ value, children }) {
+  return <option value={value}>{children}</option>
+}
+
+export function SelectTrigger({ children }) {
+  return <>{children}</>
+}
+
+export function SelectValue({ placeholder }) {
+  return <option value="">{placeholder}</option>
+}
+
+export function SelectContent({ children }) {
+  return <>{children}</>
+}
+```
