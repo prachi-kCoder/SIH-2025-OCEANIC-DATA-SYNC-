@@ -323,3 +323,166 @@ if __name__ == '__main__':
 
 ```
 
+# FRONTEND
+```
+import { useState, useEffect } from "react"
+import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card"
+import { Button } from "./components/ui/button"
+import { Loader2, Thermometer, MapPin, AlertTriangle, ShieldCheck } from "lucide-react"
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts"
+
+// Mock cache (static fallback data for prototype)
+const staticInsights = {
+  "Thunnus albacares": {
+    sstRange: "23°C – 29°C",
+    regions: ["Tropical Pacific", "Indian Ocean"],
+    risk: "High (Overfishing)",
+    recommendation: "Strengthen tuna stock monitoring and enforce quotas.",
+    chartData: [
+      { temp: 22, density: 20 },
+      { temp: 24, density: 45 },
+      { temp: 26, density: 60 },
+      { temp: 28, density: 40 },
+      { temp: 30, density: 15 },
+    ],
+  },
+  "Cyanea capillata": {
+    sstRange: "2°C – 12°C",
+    regions: ["North Atlantic", "Arctic waters"],
+    risk: "Low",
+    recommendation: "Monitor blooms; climate shifts may expand range.",
+    chartData: [
+      { temp: 0, density: 10 },
+      { temp: 4, density: 35 },
+      { temp: 8, density: 50 },
+      { temp: 12, density: 25 },
+      { temp: 16, density: 5 },
+    ],
+  },
+  "Sardinella longiceps": {
+    sstRange: "22°C – 28°C",
+    regions: ["Arabian Sea", "Bay of Bengal"],
+    risk: "Medium (Climate-sensitive)",
+    recommendation: "Implement adaptive seasonal fishing bans.",
+    chartData: [
+      { temp: 20, density: 15 },
+      { temp: 22, density: 40 },
+      { temp: 24, density: 55 },
+      { temp: 26, density: 50 },
+      { temp: 28, density: 30 },
+    ],
+  },
+}
+
+export default function InsightsUI() {
+  const [species, setSpecies] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [insight, setInsight] = useState(null)
+
+  const handleFetchInsights = () => {
+    if (!species) return
+    setLoading(true)
+
+    // Simulated API call with fallback
+    setTimeout(() => {
+      const fetched = staticInsights[species]
+      setInsight(fetched || { error: "No insights available" })
+      setLoading(false)
+    }, 1200)
+  }
+
+  return (
+    <div className="w-full max-w-5xl mx-auto p-6 space-y-6">
+      {/* Species Selector */}
+      <Card className="shadow-lg rounded-2xl p-4">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold">Select a Species</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col md:flex-row items-center gap-4">
+          <select
+            value={species}
+            onChange={(e) => setSpecies(e.target.value)}
+            className="border rounded-lg p-2 w-full md:w-1/2"
+          >
+            <option value="">-- Choose Species --</option>
+            {Object.keys(staticInsights).map((sp) => (
+              <option key={sp} value={sp}>
+                {sp}
+              </option>
+            ))}
+          </select>
+          <Button onClick={handleFetchInsights} disabled={!species || loading}>
+            {loading ? <Loader2 className="animate-spin w-4 h-4 mr-2" /> : null}
+            Get Insights
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Insights Panel */}
+      {insight && (
+        <Card className="shadow-xl rounded-2xl p-4">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold flex justify-between items-center">
+              AI-Driven Insights for <span className="text-blue-600">{species}</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {insight.error ? (
+              <p className="text-red-500">{insight.error}</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-3 bg-blue-50 rounded-xl">
+                  <Thermometer className="inline mr-2 text-blue-600" />
+                  <strong>Temperature Range:</strong>
+                  <p>{insight.sstRange}</p>
+                </div>
+
+                <div className="p-3 bg-green-50 rounded-xl">
+                  <MapPin className="inline mr-2 text-green-600" />
+                  <strong>Regions:</strong>
+                  <p>{insight.regions.join(", ")}</p>
+                </div>
+
+                <div className="p-3 bg-red-50 rounded-xl">
+                  <AlertTriangle className="inline mr-2 text-red-600" />
+                  <strong>Risk Level:</strong>
+                  <p>{insight.risk}</p>
+                </div>
+
+                <div className="p-3 bg-yellow-50 rounded-xl">
+                  <ShieldCheck className="inline mr-2 text-yellow-600" />
+                  <strong>Recommendation:</strong>
+                  <p>{insight.recommendation}</p>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Chart Section */}
+      {insight && insight.chartData && (
+        <Card className="shadow-xl rounded-2xl p-4">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">
+              Habitat Suitability vs Temperature
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={insight.chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="temp" label={{ value: "Temperature (°C)", position: "insideBottom", offset: -5 }} />
+                <YAxis label={{ value: "Occurrence Density", angle: -90, position: "insideLeft" }} />
+                <Tooltip />
+                <Line type="monotone" dataKey="density" stroke="#2563eb" strokeWidth={3} />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  )
+}
+
+```
